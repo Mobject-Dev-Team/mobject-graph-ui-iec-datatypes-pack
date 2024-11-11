@@ -1,6 +1,6 @@
 {
   "name": "mobject-graph-ui-iec-datatypes-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "IEC Datatypes Pack for mobject-graph-ui",
   "type": "module",
   "main": "dist/mobject-graph-ui-iec-datatypes-pack.bundle.cjs.js",
