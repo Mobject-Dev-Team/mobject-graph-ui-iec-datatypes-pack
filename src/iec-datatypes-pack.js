@@ -14,11 +14,11 @@ import {
 import { EnumControlWidget, EnumDisplayWidget } from "./widgets/enum-widget.js";
 
 export class IecDatatypesPack {
-  static install(graphFramework = new GraphFramework()) {
-    this.registerWidgets(graphFramework);
+  install(graphFramework = new GraphFramework(), options) {
+    this.registerWidgets(graphFramework, options);
   }
 
-  static registerWidgets(graphFramework) {
+  registerWidgets(graphFramework, options) {
     graphFramework.registerWidgetType(BooleanControlWidget, "BOOL");
     graphFramework.registerWidgetType(BooleanDisplayWidget, "BOOL");
     graphFramework.registerWidgetType(NumericControlWidget, "BYTE");

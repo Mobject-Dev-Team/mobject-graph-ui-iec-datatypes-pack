@@ -456,15 +456,16 @@ var IecDatatypesPack = /*#__PURE__*/function () {
   function IecDatatypesPack() {
     _classCallCheck(this, IecDatatypesPack);
   }
-  return _createClass(IecDatatypesPack, null, [{
+  return _createClass(IecDatatypesPack, [{
     key: "install",
     value: function install() {
       var graphFramework = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new mobjectGraphUi.GraphFramework();
-      this.registerWidgets(graphFramework);
+      var options = arguments.length > 1 ? arguments[1] : undefined;
+      this.registerWidgets(graphFramework, options);
     }
   }, {
     key: "registerWidgets",
-    value: function registerWidgets(graphFramework) {
+    value: function registerWidgets(graphFramework, options) {
       graphFramework.registerWidgetType(BooleanControlWidget, "BOOL");
       graphFramework.registerWidgetType(BooleanDisplayWidget, "BOOL");
       graphFramework.registerWidgetType(NumericControlWidget, "BYTE");
