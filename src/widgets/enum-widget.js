@@ -19,10 +19,10 @@ export class EnumDisplayWidget extends DisplayWidget {
       defaultValue,
       colorPallet
     );
-  }
 
-  onContentUpdate(value) {
-    this.textDisplayComponent.text = value;
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textDisplayComponent.text = newValue;
+    });
   }
 
   computeSize() {
@@ -50,8 +50,12 @@ export class EnumControlWidget extends ControlWidget {
       colorPallet
     );
 
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.comboboxComponent.selection = newValue;
+    });
+
     this.comboboxComponent.on("onChange", (selection) => {
-      this.setValue(selection);
+      this.value = selection;
     });
   }
 

@@ -19,10 +19,10 @@ export class StringDisplayWidget extends DisplayWidget {
       defaultValue,
       colorPallet
     );
-  }
 
-  onContentUpdate(value) {
-    this.textDisplayComponent.text = value;
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textDisplayComponent.text = newValue;
+    });
   }
 
   computeSize() {
@@ -48,8 +48,12 @@ export class StringControlWidget extends ControlWidget {
       colorPallet
     );
 
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textInputComponent.text = newValue;
+    });
+
     this.textInputComponent.on("onChange", (text) => {
-      this.setValue(text);
+      this.value = text;
     });
   }
 

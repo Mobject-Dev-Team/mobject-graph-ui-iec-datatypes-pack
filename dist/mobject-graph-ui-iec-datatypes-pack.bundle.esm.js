@@ -22,482 +22,448 @@
  * SOFTWARE.
  */
 
-import { ColorGenerator, LedComponent, DisplayWidget, CheckboxComponent, ControlWidget, NumberLimiter, NumericDisplayComponent, NumericInputComponent, SingleLineTextDisplayComponent, SingleLineTextInputComponent, ComboboxComponent, GraphFramework } from 'mobject-graph-ui';
+import { DisplayWidget, ColorGenerator, LedComponent, ControlWidget, CheckboxComponent, NumberLimiter, NumericDisplayComponent, NumericInputComponent, SingleLineTextDisplayComponent, SingleLineTextInputComponent, ComboboxComponent, GraphFramework } from 'mobject-graph-ui';
 
-function _assertThisInitialized(e) {
-  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  return e;
-}
-function _callSuper(t, o, e) {
-  return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e));
-}
-function _classCallCheck(a, n) {
-  if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function");
-}
-function _defineProperties(e, r) {
-  for (var t = 0; t < r.length; t++) {
-    var o = r[t];
-    o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o);
-  }
-}
-function _createClass(e, r, t) {
-  return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", {
-    writable: !1
-  }), e;
-}
-function _getPrototypeOf(t) {
-  return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) {
-    return t.__proto__ || Object.getPrototypeOf(t);
-  }, _getPrototypeOf(t);
-}
-function _inherits(t, e) {
-  if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function");
-  t.prototype = Object.create(e && e.prototype, {
-    constructor: {
-      value: t,
-      writable: !0,
-      configurable: !0
-    }
-  }), Object.defineProperty(t, "prototype", {
-    writable: !1
-  }), e && _setPrototypeOf(t, e);
-}
-function _isNativeReflectConstruct() {
-  try {
-    var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-  } catch (t) {}
-  return (_isNativeReflectConstruct = function () {
-    return !!t;
-  })();
-}
-function _possibleConstructorReturn(t, e) {
-  if (e && ("object" == typeof e || "function" == typeof e)) return e;
-  if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined");
-  return _assertThisInitialized(t);
-}
-function _setPrototypeOf(t, e) {
-  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
-    return t.__proto__ = e, t;
-  }, _setPrototypeOf(t, e);
-}
-function _toPrimitive(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-function _toPropertyKey(t) {
-  var i = _toPrimitive(t, "string");
-  return "symbol" == typeof i ? i : i + "";
-}
+/**
+ * This file defines two widget classes for use with IEC61131-3 BOOLEAN data types:
+ *
+ * 1. BooleanControlWidget: This widget allows users to interactively control BOOLEAN values.
+ *    - Interaction is straightforward: click the widget to toggle the boolean value between TRUE and FALSE.
+ *
+ * 2. BooleanDisplayWidget: This read-only widget is used to display BOOLEAN values, showing them as either TRUE or FALSE.
+ *
+ * Both widgets can be registered for the BOOLEAN data type using the graphFramework as follows:
+ * graphFramework.registerWidgetType(BooleanControlWidget, "BOOL");
+ * graphFramework.registerWidgetType(BooleanDisplayWidget, "BOOL");
+ *
+ * These widgets are designed to integrate seamlessly with BOOLEAN data types, offering a simple and effective user
+ * interface for displaying and controlling boolean states within the graphFramework environment.
+ */
 
-var BooleanDisplayWidget = /*#__PURE__*/function (_DisplayWidget) {
-  function BooleanDisplayWidget(name, parent, options) {
-    var _options$content, _options$content2;
-    var _this;
-    _classCallCheck(this, BooleanDisplayWidget);
-    _this = _callSuper(this, BooleanDisplayWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$content = options.content) === null || _options$content === void 0 ? void 0 : _options$content.defaultValue) || false;
-    var type = (options === null || options === void 0 || (_options$content2 = options.content) === null || _options$content2 === void 0 || (_options$content2 = _options$content2.datatype) === null || _options$content2 === void 0 ? void 0 : _options$content2.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this.ledComponent = new LedComponent(name, defaultValue, colorPallet);
-    return _this;
-  }
-  _inherits(BooleanDisplayWidget, _DisplayWidget);
-  return _createClass(BooleanDisplayWidget, [{
-    key: "onContentUpdate",
-    value: function onContentUpdate(value) {
-      this.ledComponent.isActive = value;
-    }
-  }, {
-    key: "computeSize",
-    value: function computeSize() {
-      return this.ledComponent.computeSize();
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.ledComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(DisplayWidget);
-var BooleanControlWidget = /*#__PURE__*/function (_ControlWidget) {
-  function BooleanControlWidget(name, parent, options) {
-    var _options$parameter, _options$parameter2;
-    var _this2;
-    _classCallCheck(this, BooleanControlWidget);
-    _this2 = _callSuper(this, BooleanControlWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$parameter = options.parameter) === null || _options$parameter === void 0 ? void 0 : _options$parameter.defaultValue) || false;
-    var type = (options === null || options === void 0 || (_options$parameter2 = options.parameter) === null || _options$parameter2 === void 0 || (_options$parameter2 = _options$parameter2.datatype) === null || _options$parameter2 === void 0 ? void 0 : _options$parameter2.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this2.checkboxComponent = new CheckboxComponent(name, defaultValue, colorPallet);
-    _this2.checkboxComponent.on("onChange", function (isChecked) {
-      _this2.setValue(isChecked);
+class BooleanDisplayWidget extends DisplayWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.content?.defaultValue || false;
+    const type = options?.content?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.ledComponent = new LedComponent(name, defaultValue, colorPallet);
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.ledComponent.isActive = newValue;
     });
-    return _this2;
   }
-  _inherits(BooleanControlWidget, _ControlWidget);
-  return _createClass(BooleanControlWidget, [{
-    key: "computeSize",
-    value: function computeSize() {
-      return this.checkboxComponent.computeSize();
-    }
-  }, {
-    key: "mouse",
-    value: function mouse(event, pos, node) {
-      this.checkboxComponent.onMouse(event, pos);
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.checkboxComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(ControlWidget);
 
-var NumericContent = /*#__PURE__*/function () {
-  function NumericContent(content) {
-    var _content$metadata;
-    _classCallCheck(this, NumericContent);
+  computeSize() {
+    return this.ledComponent.computeSize();
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.ledComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class BooleanControlWidget extends ControlWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.parameter?.defaultValue || false;
+    const type = options?.parameter?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.checkboxComponent = new CheckboxComponent(
+      name,
+      defaultValue,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.checkboxComponent.isChecked = newValue;
+    });
+
+    this.checkboxComponent.on("onChange", (isChecked) => {
+      this.value = isChecked;
+    });
+  }
+
+  computeSize() {
+    return this.checkboxComponent.computeSize();
+  }
+
+  mouse(event, pos, node) {
+    this.checkboxComponent.onMouse(event, pos);
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.checkboxComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class NumericContent {
+  constructor(content) {
     this.content = content;
-    this.metadata = new Map(((_content$metadata = content.metadata) !== null && _content$metadata !== void 0 ? _content$metadata : []).map(function (m) {
-      return [m.name.toLowerCase(), m.value];
-    }));
+    this.metadata = new Map(
+      (content.metadata ?? []).map((m) => [m.name.toLowerCase(), m.value])
+    );
     this.datatype = content.datatype || {};
   }
-  return _createClass(NumericContent, [{
-    key: "precision",
-    get: function get() {
-      return this.getMetadataOrDefault("precision", this.datatype.isFloat ? 2 : 0);
-    }
-  }, {
-    key: "defaultValue",
-    get: function get() {
-      var _this$content;
-      return ((_this$content = this.content) === null || _this$content === void 0 ? void 0 : _this$content.defaultValue) || 0;
-    }
-  }, {
-    key: "getMetadataOrDefault",
-    value: function getMetadataOrDefault(key, defaultValue) {
-      return this.metadata.get(key.toLowerCase()) || defaultValue;
-    }
-  }]);
-}();
 
-var NumericParameter = /*#__PURE__*/function () {
-  function NumericParameter(parameter) {
-    var _parameter$metadata;
-    _classCallCheck(this, NumericParameter);
+  get precision() {
+    return this.getMetadataOrDefault(
+      "precision",
+      this.datatype.isFloat ? 2 : 0
+    );
+  }
+
+  get defaultValue() {
+    return this.content?.defaultValue || 0;
+  }
+
+  getMetadataOrDefault(key, defaultValue) {
+    return this.metadata.get(key.toLowerCase()) || defaultValue;
+  }
+}
+
+class NumericParameter {
+  constructor(parameter) {
     this.parameter = parameter;
-    this.metadata = new Map(((_parameter$metadata = parameter.metadata) !== null && _parameter$metadata !== void 0 ? _parameter$metadata : []).map(function (m) {
-      return [m.name.toLowerCase(), m.value];
-    }));
+    this.metadata = new Map(
+      (parameter.metadata ?? []).map((m) => [m.name.toLowerCase(), m.value])
+    );
     this.datatype = parameter.datatype || {};
   }
-  return _createClass(NumericParameter, [{
-    key: "minimumValue",
-    get: function get() {
-      return this.getMetadataOrDefault("minimumValue", this.datatype.minValue || 0);
-    }
-  }, {
-    key: "maximumValue",
-    get: function get() {
-      return this.getMetadataOrDefault("maximumValue", this.datatype.maxValue || 0);
-    }
-  }, {
-    key: "precision",
-    get: function get() {
-      return this.getMetadataOrDefault("precision", this.datatype.isFloat ? 2 : 0);
-    }
-  }, {
-    key: "onlyOdd",
-    get: function get() {
-      return this.getMetadataOrDefault("onlyOdd", false);
-    }
-  }, {
-    key: "onlyEven",
-    get: function get() {
-      return this.getMetadataOrDefault("onlyEven", false);
-    }
-  }, {
-    key: "defaultValue",
-    get: function get() {
-      return this.parameter.defaultValue;
-    }
-  }, {
-    key: "getMetadataOrDefault",
-    value: function getMetadataOrDefault(key, defaultValue) {
-      return this.metadata.get(key.toLowerCase()) || defaultValue;
-    }
-  }, {
-    key: "getNumberLimiter",
-    value: function getNumberLimiter() {
-      // Determine the number constraint based on metadata flags
-      var constraint = null;
-      if (this.onlyOdd) {
-        constraint = "odd";
-      } else if (this.onlyEven) {
-        constraint = "even";
-      }
 
-      // Create and return the NumberLimiter with calculated properties
-      return new NumberLimiter(this.minimumValue, this.maximumValue, this.defaultValue, constraint, this.precision);
-    }
-  }]);
-}();
-
-var NumericDisplayWidget = /*#__PURE__*/function (_DisplayWidget) {
-  function NumericDisplayWidget(name, parent, options) {
-    var _options$content;
-    var _this;
-    _classCallCheck(this, NumericDisplayWidget);
-    _this = _callSuper(this, NumericDisplayWidget, [name, parent, options]);
-    var numericContent = new NumericContent(options.content);
-    var defaultValue = numericContent.defaultValue;
-    var precision = numericContent.precision;
-    var type = (options === null || options === void 0 || (_options$content = options.content) === null || _options$content === void 0 || (_options$content = _options$content.datatype) === null || _options$content === void 0 ? void 0 : _options$content.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this.numericDisplayComponent = new NumericDisplayComponent(name, defaultValue, precision, colorPallet);
-    return _this;
+  get minimumValue() {
+    return this.getMetadataOrDefault(
+      "minimumValue",
+      this.datatype.minValue || 0
+    );
   }
-  _inherits(NumericDisplayWidget, _DisplayWidget);
-  return _createClass(NumericDisplayWidget, [{
-    key: "onContentUpdate",
-    value: function onContentUpdate(value) {
-      this.numericDisplayComponent.value = value;
+
+  get maximumValue() {
+    return this.getMetadataOrDefault(
+      "maximumValue",
+      this.datatype.maxValue || 0
+    );
+  }
+
+  get precision() {
+    return this.getMetadataOrDefault(
+      "precision",
+      this.datatype.isFloat ? 2 : 0
+    );
+  }
+
+  get onlyOdd() {
+    return this.getMetadataOrDefault("onlyOdd", false);
+  }
+
+  get onlyEven() {
+    return this.getMetadataOrDefault("onlyEven", false);
+  }
+
+  get defaultValue() {
+    return this.parameter.defaultValue;
+  }
+
+  getMetadataOrDefault(key, defaultValue) {
+    return this.metadata.get(key.toLowerCase()) || defaultValue;
+  }
+
+  getNumberLimiter() {
+    // Determine the number constraint based on metadata flags
+    let constraint = null;
+    if (this.onlyOdd) {
+      constraint = "odd";
+    } else if (this.onlyEven) {
+      constraint = "even";
     }
-  }, {
-    key: "computeSize",
-    value: function computeSize() {
-      return this.numericDisplayComponent.computeSize();
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.numericDisplayComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(DisplayWidget);
-var NumericControlWidget = /*#__PURE__*/function (_ControlWidget) {
-  function NumericControlWidget(name, parent, options) {
-    var _options$parameter;
-    var _this2;
-    _classCallCheck(this, NumericControlWidget);
-    _this2 = _callSuper(this, NumericControlWidget, [name, parent, options]);
-    var numericParameter = new NumericParameter(options.parameter);
-    var defaultValue = numericParameter.defaultValue;
-    var precision = numericParameter.precision;
-    var limiter = numericParameter.getNumberLimiter();
-    var type = (options === null || options === void 0 || (_options$parameter = options.parameter) === null || _options$parameter === void 0 || (_options$parameter = _options$parameter.datatype) === null || _options$parameter === void 0 ? void 0 : _options$parameter.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this2.numericInputComponent = new NumericInputComponent(name, defaultValue, precision, limiter, colorPallet);
-    _this2.numericInputComponent.on("onChange", function (value) {
-      _this2.setValue(value);
+
+    // Create and return the NumberLimiter with calculated properties
+    return new NumberLimiter(
+      this.minimumValue,
+      this.maximumValue,
+      this.defaultValue,
+      constraint,
+      this.precision
+    );
+  }
+}
+
+/**
+ * This file defines two widget classes for use with IEC61131-3 numeric data types:
+ *
+ * 1. NumericControlWidget: This editable widget can be used to control numeric values.
+ *    It supports various interactions for setting and adjusting values:
+ *    - Click the displayed number to manually enter a value using the keyboard.
+ *    - Click and drag the displayed number to increment or decrement the value.
+ *      Holding the 'Shift' key while dragging will apply a 10x multiplier to the value changes.
+ *      Holding both 'Shift' and 'Alt' keys will apply a 100x multiplier.
+ *    - Use the arrow keys to increment or decrement the value in small steps.
+ *    It also supports additional metadata options to customize its behavior:
+ *    - minimumValue: Specifies a minimum value for the widget; if not provided, the data type's minimum value is used.
+ *    - maximumValue: Specifies a maximum value for the widget; if not provided, the data type's maximum value is used.
+ *    - onlyOdd: A boolean that, when set to true, restricts input to odd numbers only.
+ *    - onlyEven: A boolean that, when set to true, restricts input to even numbers only.
+ *    - precision: An integer specifying the number of decimal places for float values (e.g., REAL data type),
+ *      where 1 represents 1 decimal place.
+ *
+ * 2. NumericDisplayWidget: This read-only widget is used to display numeric values.
+ *    It supports additional metadata options to customize its behavior:
+ *    - precision: An integer specifying the number of decimal places for float values (e.g., REAL data type),
+ *
+ * Both widgets can be registered for specific numeric data types using the graphFramework as follows:
+ * graphFramework.registerWidgetType(NumericControlWidget, "INT");
+ * graphFramework.registerWidgetType(NumericDisplayWidget, "INT");
+ *
+ * Example usage and registration demonstrate how these widgets can be integrated with numeric data types
+ * such as INT (integer) to enhance user interface interactions within the graphFramework.
+ */
+
+class NumericDisplayWidget extends DisplayWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const numericContent = new NumericContent(options.content);
+    const defaultValue = numericContent.defaultValue;
+    const precision = numericContent.precision;
+    const type = options?.content?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.numericDisplayComponent = new NumericDisplayComponent(
+      name,
+      defaultValue,
+      precision,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.numericDisplayComponent.value = newValue;
     });
-    return _this2;
   }
-  _inherits(NumericControlWidget, _ControlWidget);
-  return _createClass(NumericControlWidget, [{
-    key: "computeSize",
-    value: function computeSize() {
-      return this.numericInputComponent.computeSize();
-    }
-  }, {
-    key: "mouse",
-    value: function mouse(event, pos, node) {
-      this.numericInputComponent.onMouse(event, pos, node);
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.numericInputComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(ControlWidget);
 
-var StringDisplayWidget = /*#__PURE__*/function (_DisplayWidget) {
-  function StringDisplayWidget(name, parent, options) {
-    var _options$content, _options$content2;
-    var _this;
-    _classCallCheck(this, StringDisplayWidget);
-    _this = _callSuper(this, StringDisplayWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$content = options.content) === null || _options$content === void 0 ? void 0 : _options$content.defaultValue) || "";
-    var type = (options === null || options === void 0 || (_options$content2 = options.content) === null || _options$content2 === void 0 || (_options$content2 = _options$content2.datatype) === null || _options$content2 === void 0 ? void 0 : _options$content2.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this.textDisplayComponent = new SingleLineTextDisplayComponent(name, defaultValue, colorPallet);
-    return _this;
+  computeSize() {
+    return this.numericDisplayComponent.computeSize();
   }
-  _inherits(StringDisplayWidget, _DisplayWidget);
-  return _createClass(StringDisplayWidget, [{
-    key: "onContentUpdate",
-    value: function onContentUpdate(value) {
-      this.textDisplayComponent.text = value;
-    }
-  }, {
-    key: "computeSize",
-    value: function computeSize() {
-      return this.textDisplayComponent.computeSize();
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.textDisplayComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(DisplayWidget);
-var StringControlWidget = /*#__PURE__*/function (_ControlWidget) {
-  function StringControlWidget(name, parent, options) {
-    var _options$parameter, _options$parameter2;
-    var _this2;
-    _classCallCheck(this, StringControlWidget);
-    _this2 = _callSuper(this, StringControlWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$parameter = options.parameter) === null || _options$parameter === void 0 ? void 0 : _options$parameter.defaultValue) || "";
-    var type = (options === null || options === void 0 || (_options$parameter2 = options.parameter) === null || _options$parameter2 === void 0 || (_options$parameter2 = _options$parameter2.datatype) === null || _options$parameter2 === void 0 ? void 0 : _options$parameter2.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this2.textInputComponent = new SingleLineTextInputComponent(name, defaultValue, colorPallet);
-    _this2.textInputComponent.on("onChange", function (text) {
-      _this2.setValue(text);
+
+  draw(ctx, node, widget_width, y, H) {
+    this.numericDisplayComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class NumericControlWidget extends ControlWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const numericParameter = new NumericParameter(options.parameter);
+    const defaultValue = numericParameter.defaultValue;
+    const precision = numericParameter.precision;
+    const limiter = numericParameter.getNumberLimiter();
+    const type = options?.parameter?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.numericInputComponent = new NumericInputComponent(
+      name,
+      defaultValue,
+      precision,
+      limiter,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.numericInputComponent.value = newValue;
     });
-    return _this2;
-  }
-  _inherits(StringControlWidget, _ControlWidget);
-  return _createClass(StringControlWidget, [{
-    key: "computeSize",
-    value: function computeSize() {
-      return this.textInputComponent.computeSize();
-    }
-  }, {
-    key: "mouse",
-    value: function mouse(event, pos, node) {
-      this.textInputComponent.onMouse(event, pos);
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.textInputComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(ControlWidget);
 
-var EnumDisplayWidget = /*#__PURE__*/function (_DisplayWidget) {
-  function EnumDisplayWidget(name, parent, options) {
-    var _options$content, _options$content2;
-    var _this;
-    _classCallCheck(this, EnumDisplayWidget);
-    _this = _callSuper(this, EnumDisplayWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$content = options.content) === null || _options$content === void 0 ? void 0 : _options$content.defaultValue) || "";
-    var type = (options === null || options === void 0 || (_options$content2 = options.content) === null || _options$content2 === void 0 || (_options$content2 = _options$content2.datatype) === null || _options$content2 === void 0 ? void 0 : _options$content2.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this.textDisplayComponent = new SingleLineTextDisplayComponent(name, defaultValue, colorPallet);
-    return _this;
-  }
-  _inherits(EnumDisplayWidget, _DisplayWidget);
-  return _createClass(EnumDisplayWidget, [{
-    key: "onContentUpdate",
-    value: function onContentUpdate(value) {
-      this.textDisplayComponent.text = value;
-    }
-  }, {
-    key: "computeSize",
-    value: function computeSize() {
-      return this.textDisplayComponent.computeSize();
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.textDisplayComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(DisplayWidget);
-var EnumControlWidget = /*#__PURE__*/function (_ControlWidget) {
-  function EnumControlWidget(name, parent, options) {
-    var _options$parameter, _options$parameter2, _options$parameter3;
-    var _this2;
-    _classCallCheck(this, EnumControlWidget);
-    _this2 = _callSuper(this, EnumControlWidget, [name, parent, options]);
-    var defaultValue = (options === null || options === void 0 || (_options$parameter = options.parameter) === null || _options$parameter === void 0 ? void 0 : _options$parameter.defaultValue) || "";
-    var enumerations = (options === null || options === void 0 || (_options$parameter2 = options.parameter) === null || _options$parameter2 === void 0 || (_options$parameter2 = _options$parameter2.datatype) === null || _options$parameter2 === void 0 ? void 0 : _options$parameter2.enumerations) || [];
-    var type = (options === null || options === void 0 || (_options$parameter3 = options.parameter) === null || _options$parameter3 === void 0 || (_options$parameter3 = _options$parameter3.datatype) === null || _options$parameter3 === void 0 ? void 0 : _options$parameter3.typeName) || "";
-    var colorPallet = new ColorGenerator(type);
-    _this2.comboboxComponent = new ComboboxComponent(name, defaultValue, enumerations, colorPallet);
-    _this2.comboboxComponent.on("onChange", function (selection) {
-      _this2.setValue(selection);
+    this.numericInputComponent.on("onChange", (value) => {
+      this.value = value;
     });
-    return _this2;
   }
-  _inherits(EnumControlWidget, _ControlWidget);
-  return _createClass(EnumControlWidget, [{
-    key: "computeSize",
-    value: function computeSize() {
-      return this.comboboxComponent.computeSize();
-    }
-  }, {
-    key: "mouse",
-    value: function mouse(event, pos, node) {
-      this.comboboxComponent.onMouse(event, pos);
-    }
-  }, {
-    key: "draw",
-    value: function draw(ctx, node, widget_width, y, H) {
-      this.comboboxComponent.draw(ctx, node, widget_width, y, H);
-    }
-  }]);
-}(ControlWidget);
 
-var IecDatatypesPack = /*#__PURE__*/function () {
-  function IecDatatypesPack() {
-    _classCallCheck(this, IecDatatypesPack);
+  computeSize() {
+    return this.numericInputComponent.computeSize();
   }
-  return _createClass(IecDatatypesPack, [{
-    key: "install",
-    value: function install() {
-      var graphFramework = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new GraphFramework();
-      var options = arguments.length > 1 ? arguments[1] : undefined;
-      this.registerWidgets(graphFramework, options);
-    }
-  }, {
-    key: "registerWidgets",
-    value: function registerWidgets(graphFramework, options) {
-      graphFramework.registerWidgetType(BooleanControlWidget, "BOOL");
-      graphFramework.registerWidgetType(BooleanDisplayWidget, "BOOL");
-      graphFramework.registerWidgetType(NumericControlWidget, "BYTE");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "BYTE");
-      graphFramework.registerWidgetType(NumericControlWidget, "WORD");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "WORD");
-      graphFramework.registerWidgetType(NumericControlWidget, "DWORD");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "DWORD");
-      graphFramework.registerWidgetType(NumericControlWidget, "LWORD");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "LWORD");
-      graphFramework.registerWidgetType(NumericControlWidget, "INT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "INT");
-      graphFramework.registerWidgetType(NumericControlWidget, "LINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "LINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "DINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "DINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "SINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "SINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "USINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "USINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "UINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "UINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "UDINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "UDINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "ULINT");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "ULINT");
-      graphFramework.registerWidgetType(NumericControlWidget, "REAL");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "REAL");
-      graphFramework.registerWidgetType(NumericControlWidget, "LREAL");
-      graphFramework.registerWidgetType(NumericDisplayWidget, "LREAL");
-      graphFramework.registerWidgetType(StringControlWidget, "STRING");
-      graphFramework.registerWidgetType(StringDisplayWidget, "STRING");
-      graphFramework.registerWidgetType(EnumControlWidget, "ENUM", "*");
-      graphFramework.registerWidgetType(EnumDisplayWidget, "ENUM", "*");
-    }
-  }]);
-}();
+
+  mouse(event, pos, node) {
+    this.numericInputComponent.onMouse(event, pos, node);
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.numericInputComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class StringDisplayWidget extends DisplayWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.content?.defaultValue || "";
+    const type = options?.content?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.textDisplayComponent = new SingleLineTextDisplayComponent(
+      name,
+      defaultValue,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textDisplayComponent.text = newValue;
+    });
+  }
+
+  computeSize() {
+    return this.textDisplayComponent.computeSize();
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.textDisplayComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class StringControlWidget extends ControlWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.parameter?.defaultValue || "";
+    const type = options?.parameter?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.textInputComponent = new SingleLineTextInputComponent(
+      name,
+      defaultValue,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textInputComponent.text = newValue;
+    });
+
+    this.textInputComponent.on("onChange", (text) => {
+      this.value = text;
+    });
+  }
+
+  computeSize() {
+    return this.textInputComponent.computeSize();
+  }
+
+  mouse(event, pos, node) {
+    this.textInputComponent.onMouse(event, pos);
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.textInputComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class EnumDisplayWidget extends DisplayWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.content?.defaultValue || "";
+    const type = options?.content?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.textDisplayComponent = new SingleLineTextDisplayComponent(
+      name,
+      defaultValue,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.textDisplayComponent.text = newValue;
+    });
+  }
+
+  computeSize() {
+    return this.textDisplayComponent.computeSize();
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.textDisplayComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class EnumControlWidget extends ControlWidget {
+  constructor(name, parent, options) {
+    super(name, parent, options);
+
+    const defaultValue = options?.parameter?.defaultValue || "";
+    const enumerations = options?.parameter?.datatype?.enumerations || [];
+    const type = options?.parameter?.datatype?.typeName || "";
+    const colorPallet = new ColorGenerator(type);
+
+    this.comboboxComponent = new ComboboxComponent(
+      name,
+      defaultValue,
+      enumerations,
+      colorPallet
+    );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.comboboxComponent.selection = newValue;
+    });
+
+    this.comboboxComponent.on("onChange", (selection) => {
+      this.value = selection;
+    });
+  }
+
+  computeSize() {
+    return this.comboboxComponent.computeSize();
+  }
+
+  mouse(event, pos, node) {
+    this.comboboxComponent.onMouse(event, pos);
+  }
+
+  draw(ctx, node, widget_width, y, H) {
+    this.comboboxComponent.draw(ctx, node, widget_width, y, H);
+  }
+}
+
+class IecDatatypesPack {
+  install(graphFramework = new GraphFramework(), options) {
+    this.registerWidgets(graphFramework, options);
+  }
+
+  registerWidgets(graphFramework, options) {
+    graphFramework.registerWidgetType(BooleanControlWidget, "BOOL");
+    graphFramework.registerWidgetType(BooleanDisplayWidget, "BOOL");
+    graphFramework.registerWidgetType(NumericControlWidget, "BYTE");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "BYTE");
+    graphFramework.registerWidgetType(NumericControlWidget, "WORD");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "WORD");
+    graphFramework.registerWidgetType(NumericControlWidget, "DWORD");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "DWORD");
+    graphFramework.registerWidgetType(NumericControlWidget, "LWORD");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "LWORD");
+    graphFramework.registerWidgetType(NumericControlWidget, "INT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "INT");
+    graphFramework.registerWidgetType(NumericControlWidget, "LINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "LINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "DINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "DINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "SINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "SINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "USINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "USINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "UINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "UINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "UDINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "UDINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "ULINT");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "ULINT");
+    graphFramework.registerWidgetType(NumericControlWidget, "REAL");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "REAL");
+    graphFramework.registerWidgetType(NumericControlWidget, "LREAL");
+    graphFramework.registerWidgetType(NumericDisplayWidget, "LREAL");
+    graphFramework.registerWidgetType(StringControlWidget, "STRING");
+    graphFramework.registerWidgetType(StringDisplayWidget, "STRING");
+    graphFramework.registerWidgetType(EnumControlWidget, "ENUM", "*");
+    graphFramework.registerWidgetType(EnumDisplayWidget, "ENUM", "*");
+  }
+}
 
 export { IecDatatypesPack };

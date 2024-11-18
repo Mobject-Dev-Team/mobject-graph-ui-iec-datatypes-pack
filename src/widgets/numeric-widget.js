@@ -54,10 +54,10 @@ export class NumericDisplayWidget extends DisplayWidget {
       precision,
       colorPallet
     );
-  }
 
-  onContentUpdate(value) {
-    this.numericDisplayComponent.value = value;
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.numericDisplayComponent.value = newValue;
+    });
   }
 
   computeSize() {
@@ -88,8 +88,12 @@ export class NumericControlWidget extends ControlWidget {
       colorPallet
     );
 
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.numericInputComponent.value = newValue;
+    });
+
     this.numericInputComponent.on("onChange", (value) => {
-      this.setValue(value);
+      this.value = value;
     });
   }
 

@@ -31,10 +31,10 @@ export class BooleanDisplayWidget extends DisplayWidget {
     const colorPallet = new ColorGenerator(type);
 
     this.ledComponent = new LedComponent(name, defaultValue, colorPallet);
-  }
 
-  onContentUpdate(value) {
-    this.ledComponent.isActive = value;
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.ledComponent.isActive = newValue;
+    });
   }
 
   computeSize() {
@@ -59,8 +59,13 @@ export class BooleanControlWidget extends ControlWidget {
       defaultValue,
       colorPallet
     );
+
+    this.on("valueChanged", (newValue, oldValue) => {
+      this.checkboxComponent.isChecked = newValue;
+    });
+
     this.checkboxComponent.on("onChange", (isChecked) => {
-      this.setValue(isChecked);
+      this.value = isChecked;
     });
   }
 
