@@ -10,7 +10,7 @@ export default {
   output: [
     // UMD Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.js",
       format: "umd",
       name: "MobjectGraphUiIecDatatypesPack",
       globals: {
@@ -19,7 +19,7 @@ export default {
     },
     // Minified UMD Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.min.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.min.js",
       format: "umd",
       name: "MobjectGraphUiIecDatatypesPack",
       globals: {
@@ -29,23 +29,23 @@ export default {
     },
     // ESM Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.esm.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.esm.js",
       format: "esm",
     },
     // Minified ESM Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.esm.min.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.esm.min.js",
       format: "esm",
       plugins: [terser()],
     },
     // CommonJS Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.cjs.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.cjs.js",
       format: "cjs",
     },
     // Minified CommonJS Build
     {
-      file: "dist/mobject-graph-ui-iec-datatypes-pack.bundle.cjs.min.js",
+      file: "dist/js/mobject-graph-ui-iec-datatypes-pack.bundle.cjs.min.js",
       format: "cjs",
       plugins: [terser()],
     },
@@ -56,7 +56,7 @@ export default {
     css({
       output: "mobject-graph-ui-iec-datatypes-pack.css",
     }),
-    cssLicenseBanner(),
+    addLicenseToCssFiles({ filename: "LICENSE" }),
     license({
       sourcemap: true,
       cwd: process.cwd(),
@@ -76,27 +76,42 @@ export default {
         },
       },
     }),
+    finallyMoveFile({
+      src: "dist/js/mobject-graph-ui-iec-datatypes-pack.css",
+      dest: "dist/css/mobject-graph-ui-iec-datatypes-pack.css",
+    }),
   ],
 };
 
-function makeLicenseContent() {
-  const licenseFile = path.join(__dirname, "LICENSE");
-  let licenseContent = fs.readFileSync(licenseFile, "utf-8");
-  return licenseContent;
-}
-
-function cssLicenseBanner() {
+function addLicenseToCssFiles({ filename }) {
   return {
     name: "css-license-banner",
     generateBundle(outputOptions, bundle) {
-      const licenseContent = makeLicenseContent();
+      const licenseFile = path.join(__dirname, filename);
+      let licenseContent = fs.readFileSync(licenseFile, "utf-8");
       const banner = `/*\n${licenseContent}\n*/\n`;
 
-      for (const fileName of Object.keys(bundle)) {
-        if (fileName.endsWith(".css")) {
-          bundle[fileName].source = banner + bundle[fileName].source;
+      for (const bundleFileName of Object.keys(bundle)) {
+        if (bundleFileName.endsWith(".css")) {
+          bundle[bundleFileName].source =
+            banner + bundle[bundleFileName].source;
         }
       }
+    },
+  };
+}
+
+function finallyMoveFile(options) {
+  return {
+    name: "copy-then-delete",
+    closeBundle() {
+      const destDir = path.dirname(options.dest);
+      if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
+      }
+
+      fs.copyFileSync(options.src, options.dest);
+      fs.unlinkSync(options.src);
     },
   };
 }
