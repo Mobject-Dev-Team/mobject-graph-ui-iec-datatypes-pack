@@ -57,8 +57,8 @@ export class StringControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.textInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.textInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {

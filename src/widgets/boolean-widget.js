@@ -69,8 +69,8 @@ export class BooleanControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.checkboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.checkboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {

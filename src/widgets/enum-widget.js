@@ -59,8 +59,8 @@ export class EnumControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.comboboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.comboboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {

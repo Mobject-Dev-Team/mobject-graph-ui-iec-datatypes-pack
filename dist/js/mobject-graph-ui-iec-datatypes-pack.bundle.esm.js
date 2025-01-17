@@ -87,8 +87,8 @@ class BooleanControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.checkboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.checkboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -280,8 +280,8 @@ class NumericControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.numericInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.numericInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -344,8 +344,8 @@ class StringControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.textInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.textInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -410,8 +410,8 @@ class EnumControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.comboboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.comboboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {

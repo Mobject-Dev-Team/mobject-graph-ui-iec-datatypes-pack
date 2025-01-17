@@ -91,8 +91,8 @@ class BooleanControlWidget extends mobjectGraphUi.ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.checkboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.checkboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -284,8 +284,8 @@ class NumericControlWidget extends mobjectGraphUi.ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.numericInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.numericInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -348,8 +348,8 @@ class StringControlWidget extends mobjectGraphUi.ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.textInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.textInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
@@ -414,8 +414,8 @@ class EnumControlWidget extends mobjectGraphUi.ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.comboboxComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.comboboxComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {

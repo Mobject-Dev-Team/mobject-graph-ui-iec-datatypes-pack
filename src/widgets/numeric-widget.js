@@ -97,8 +97,8 @@ export class NumericControlWidget extends ControlWidget {
     });
   }
 
-  computeSize() {
-    return this.numericInputComponent.computeSize();
+  computeSize(nodeX, nodeY) {
+    return this.numericInputComponent.computeSize(nodeX, nodeY);
   }
 
   mouse(event, pos, node) {
